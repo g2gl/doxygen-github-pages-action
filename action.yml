@@ -21,6 +21,12 @@ inputs:
     description: 'Path of the Doxygen configuration file'
     required: true
     default: "Doxyfile"
+  repository_name:
+    description: >
+      Target repository containing the deployment branch to which the results should be pushed.
+      Leave unset to use the current repository. This should be formatted like so: JamesIves/github-pages-deploy-action.
+      You'll need to use a PAT in the github_token input for this configuration option to work properly.
+    required: false
   target_folder:
     description: 'Directory on the deployment branch for pushing the build files'
     required: false
@@ -36,6 +42,7 @@ runs:
       uses: actions/checkout@v4
       with:
         submodules: "true"
+        persist-credentials: false
 
     - name: Install dependencies
       run: sudo apt-get update && sudo apt-get install -y wget graphviz
@@ -64,3 +71,4 @@ runs:
         branch: ${{ inputs.branch }}
         folder: ${{ inputs.folder }}
         target-folder: ${{ inputs.target_folder }}
+        repository-name: ${{ inputs.repository_name }}
