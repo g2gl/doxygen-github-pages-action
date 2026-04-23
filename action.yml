@@ -18,9 +18,13 @@ inputs:
     required: true
     default: "docs/html"
   config_file:
-    description: 'Path of the Doxygen configuration file'
+    description: 'Path of the Doxygen configuration file (relative to build_folder)'
     required: true
     default: "Doxyfile"
+  build_folder:
+    description: 'Folder where Doxygen will be run'
+    required: true
+    default: "."
   repository_name:
     description: >
       Target repository containing the deployment branch to which the results should be pushed.
@@ -58,6 +62,7 @@ runs:
 
     - name: Generate Doxygen Documentation
       run: doxygen ${{ inputs.config_file }}
+      working-directory: ${{ inputs.build_folder }}
       shell: bash
       
     - name: Create .nojekyll (ensures pages with underscores work on gh pages)
